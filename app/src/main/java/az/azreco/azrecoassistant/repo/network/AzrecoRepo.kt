@@ -8,8 +8,8 @@ import javax.inject.Inject
 class AzrecoRepo @Inject constructor(private val azrecoApi: AzrecoApi) {
 
     // users db
-    suspend fun signIn(username: String, password: String) =
-        azrecoApi.signIn(username = username, password = password)
+    suspend fun signIn(email: String, password: String) =
+        azrecoApi.signIn(email = email, password = password)
 
     suspend fun signUp(user: UserModel) = azrecoApi.signUp(user = user)
 

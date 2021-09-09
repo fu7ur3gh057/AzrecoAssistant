@@ -12,7 +12,7 @@ interface AzrecoApi {
     // USERS DATABASE
     @GET("/users")
     suspend fun signIn(
-        @Query("username") username: String,
+        @Query("email") email: String,
         @Query("password") password: String
     ): Response<UserModel>
 

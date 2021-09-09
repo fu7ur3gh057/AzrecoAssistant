@@ -15,5 +15,7 @@
     <color name="bottom_app_bar">#121212</color>
 
     <color name="tip_container">#CACACA</color>
+    <color name="login_color">#12CB30</color>
+    <color name="status_bar_color">#393939</color>
 
 </resources>

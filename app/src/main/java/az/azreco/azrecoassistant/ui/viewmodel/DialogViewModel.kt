@@ -28,21 +28,7 @@ class DialogViewModel @Inject constructor(
 
 
     fun lol() = viewModelScope.launch(Dispatchers.IO) {
-//        val response = assistant.listenKeyword(keyWords = "salam\nsagol",
-//            startListen = {
-//                Log.d(TAG, "start Listening!!")
-//            },
-//            endListen = {
-//                Log.d(TAG, "end Listening !!")
-//            })
-//
-//        Log.d(TAG, "RESULT IS - $response")
-        assistant.playExoSync("repeat_1", true)
-        Log.d(TAG, "RESULT IS")
-        assistant.playExoSync("repeat_2", true)
-        Log.d(TAG, "RESULT IS")
-        assistant.playExoAsync("repeat_1")
-        Log.d(TAG, "RESULT IS")
+
     }
 
 }

@@ -41,30 +41,6 @@ class TextToSpeech {
         }
     }
 
-    // передает байты клиента в audioTrack
-//    private fun writeBytes(bufferSize: Int) {
-//        val buffer = ByteArray(bufferSize)
-//        while (ttsClient?.isOk == true) {
-//            val result = ttsClient?.read()
-//            if (result == null || result.isEmpty()) break
-//            if (result.size > bufferSize) {
-//                val numBlocks: Int = result.size / bufferSize
-//                val remainBytes: Int = result.size % bufferSize
-//                for (j in 0 until numBlocks) {
-//                    System.arraycopy(result, j * bufferSize, buffer, 0, bufferSize)
-//                    audioTrack?.write(buffer, 0, bufferSize)
-//                }
-//                if (remainBytes > 0) {
-//                    System.arraycopy(result, numBlocks * bufferSize, buffer, 0, remainBytes)
-//                    audioTrack?.write(buffer, 0, remainBytes)
-//                }
-//            } else {
-//                System.arraycopy(result, 0, buffer, 0, result.size)
-//                audioTrack?.write(buffer, 0, result.size)
-//            }
-//        }
-//    }
-
     // MULTIPLE TEXT SYNTHESIS
     @RequiresApi(Build.VERSION_CODES.N)
     fun speakByteStream(baos: ByteArrayOutputStream) {

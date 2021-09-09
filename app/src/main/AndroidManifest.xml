@@ -20,14 +20,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AzrecoAssistant">
-        <activity android:name=".ui.activity.DialogActivity"></activity>
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name=".ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.DialogActivity" />
+        <activity android:name=".ui.activity.MainActivity">
+        </activity>
+
         <service
             android:name=".service.AzrecoService"
             android:foregroundServiceType="microphone"
@@ -37,6 +40,7 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
