@@ -41,8 +41,6 @@ class TextToSpeech {
         }
     }
 
-    // salamg
-
     // передает байты клиента в audioTrack
 //    private fun writeBytes(bufferSize: Int) {
 //        val buffer = ByteArray(bufferSize)
