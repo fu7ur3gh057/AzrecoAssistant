@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="az.azreco.azrecoassistant.ui.fragment.main.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/savedFragment"
+        android:name="az.azreco.azrecoassistant.ui.fragment.main.SavedFragment"
+        android:label="SavedFragment" />
+    <fragment
+        android:id="@+id/subscribeFragment"
+        android:name="az.azreco.azrecoassistant.ui.fragment.main.SubscribeFragment"
+        android:label="SubscribeFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="az.azreco.azrecoassistant.ui.fragment.main.SettingsFragment"
+        android:label="SettingsFragment" />
+</navigation>

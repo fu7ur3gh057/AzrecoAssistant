@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_nav_graph"
+    app:startDestination="@id/chatFragment">
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="az.azreco.azrecoassistant.ui.fragment.dialog.ChatFragment"
+        android:label="ChatFragment" />
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="az.azreco.azrecoassistant.ui.fragment.dialog.NewsFragment"
+        android:label="NewsFragment" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="az.azreco.azrecoassistant.ui.fragment.dialog.WebViewFragment"
+        android:label="WebViewFragment" />
+</navigation>

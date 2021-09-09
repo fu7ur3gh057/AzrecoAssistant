@@ -1,0 +1,2 @@
+rootProject.name = "AzrecoAssistant"
+include ':app'

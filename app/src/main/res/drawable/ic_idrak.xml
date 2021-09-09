@@ -1,0 +1,74 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="92dp"
+    android:height="33.26dp"
+    android:viewportWidth="568.6"
+    android:viewportHeight="298.26">
+    <path
+        android:fillColor="@color/idrak_text_color"
+        android:pathData="m51.328,16.908a9.132,10.444 0,0 1,9.665 10.748l0,256.244l-17.011,0c-5.67,0 -6.673,-3.816 -7.002,-5.733l0,-261.26l14.348,0z"
+        tools:ignore="VectorRaster" />
+    <path
+        android:fillColor="@color/idrak_text_color"
+        android:pathData="m160.77,16.908a29.667,33.929 0,0 1,29.761 33.553l0,199.868a29.761,34.037 0,0 1,-29.761 33.571l-46.412,0l0,-266.921l46.412,-0.072zM166.785,58.111c0,-9.924 -6.015,-13.722 -12.672,-13.722l-15.664,0l0,212.426l15.664,0c6.657,0 12.672,-3.816 12.672,-14.116l0,-184.587z"
+        tools:ignore="VectorRaster" />
+    <path
+        android:fillColor="@color/idrak_text_color"
+        android:pathData="m284.514,283.9l0,-97.65c0,-12.97 -5.999,-17.162 -12.327,-17.162l-12.735,0l0,114.812l-24.028,0l0,-266.921l43.686,0a29.369,33.589 0,0 1,29.338 33.553l0,82.405s1.002,20.977 -8.662,23.647c9.398,5.374 8.662,25.187 8.662,25.187l0,102.218l-23.934,-0.09zM272.187,143.149c6.265,0 12.327,-3.045 12.327,-15.263l0,-71.657c0,-9.924 -5.999,-13.74 -12.327,-13.74l-12.735,0l0,100.695l12.735,-0.036z"
+        tools:ignore="VectorRaster" />
+    <path android:pathData="m434.181,283.9l-26.346,0l-21.005,-132.368l-21.021,132.368l-26.346,0l35.353,-266.921l13.079,0c9.993,0 11.669,7.166 12.672,14.493l33.614,252.428z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="336.17343"
+                android:endY="138.31061"
+                android:startX="463.62885"
+                android:startY="191.3745"
+                android:type="linear">
+                <item
+                    android:color="#FF537E26"
+                    android:offset="0" />
+                <item
+                    android:color="#FF48762B"
+                    android:offset="0.01" />
+                <item
+                    android:color="#FF3D6D30"
+                    android:offset="0.02" />
+                <item
+                    android:color="#FF366833"
+                    android:offset="0.04" />
+                <item
+                    android:color="#FF346734"
+                    android:offset="0.1" />
+                <item
+                    android:color="#FF396B35"
+                    android:offset="0.13" />
+                <item
+                    android:color="#FF588A39"
+                    android:offset="0.28" />
+                <item
+                    android:color="#FF5F913A"
+                    android:offset="0.31" />
+                <item
+                    android:color="#FF70A03B"
+                    android:offset="0.37" />
+                <item
+                    android:color="#FF8BB83B"
+                    android:offset="0.49" />
+                <item
+                    android:color="#FF9BC73C"
+                    android:offset="0.59" />
+                <item
+                    android:color="#FFA1CC3C"
+                    android:offset="0.67" />
+                <item
+                    android:color="#FFA1CC3C"
+                    android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="@color/idrak_text_color"
+        android:pathData="m523.558,283.9l-32.017,-119.38l0,119.38l-23.668,0l0,-256.71c0,-8.384 4.997,-9.907 7.66,-10.283l16.008,0l0,97.256l29.354,-96.504l25.062,0l-37.687,120.15l40.35,146.09l-25.062,0z"
+        tools:ignore="VectorRaster" />
+</vector>

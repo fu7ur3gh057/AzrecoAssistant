@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        app:showAsAction="withText" />
+
+    <!--    <item android:title="Settings" />-->
+
+    <item
+        android:id="@+id/subscribeFragment"
+        android:icon="@drawable/ic_bell"
+        android:title="Subscribe"
+        app:showAsAction="withText" />
+
+    <item android:title="" />
+
+    <item
+        android:id="@+id/savedFragment"
+        android:icon="@drawable/ic_note"
+        android:title="Saved"
+        app:showAsAction="withText" />
+
+    <!--    <item android:title="Settings" />-->
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"
+        app:showAsAction="withText" />
+</menu>

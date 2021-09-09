@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tip_container"
+        android:padding="15dp">
+
+
+        <TextView
+            android:id="@+id/tipHeaderTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="bilirsinizmi ?"
+            android:textColor="@color/unselected_item"
+            android:textSize="10sp" />
+
+        <LinearLayout
+            android:id="@+id/tipTextContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tipTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tipHeaderTv"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/abeezee"
+                    android:text="Ad günü xatırlatması"
+                    android:textColor="@color/main_color"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tipTextTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tipTitleTv"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tipText"
+                    android:textColor="@color/main_color"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/tipIv"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/ic_cake" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tipTryBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tipTextContainer"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:text="Yoxla"
+            android:textColor="@color/green_500"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tipOkayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tipTextContainer"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/tipTryBtn"
+            android:fontFamily="sans-serif"
+            android:text="bildim"
+            android:textColor="@color/unselected_item"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
