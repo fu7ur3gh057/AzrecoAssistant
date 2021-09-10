@@ -1,6 +1,11 @@
 package az.azreco.azrecoassistant.adapter
 
 class DialogAdapter {
+
+
+
+
+
 }
 
 sealed class DialogData {

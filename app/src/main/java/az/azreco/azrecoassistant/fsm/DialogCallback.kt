@@ -1,15 +1,17 @@
 package az.azreco.azrecoassistant.fsm
 
+import az.azreco.azrecoassistant.adapter.DialogData
+
 // class utility for ease callback dialogListener and sceneChangedListener for every Scene Classes
 class DialogCallback(
     dialogListener: (DialogResponse) -> Unit,
 ) {
     private var listener: (DialogResponse) -> Unit = dialogListener
 
-//    fun updateDialog(isReceived: Boolean, text: String) =
-//        listener(
-//            DialogResponse.DialogMessage(DialogData.Message(isReceived = isReceived, text = text))
-//        )
+    fun updateDialog(isReceived: Boolean, text: String) =
+        listener(
+            DialogResponse.Message(DialogData.Message(isReceived = isReceived, text = text))
+        )
 
     fun updateDialog(link: String) =
         listener(DialogResponse.DialogLink(link = link))

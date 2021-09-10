@@ -2,11 +2,9 @@ package az.azreco.azrecoassistant.fsm
 
 import android.util.Log
 import az.azreco.azrecoassistant.adapter.DialogData
+import az.azreco.azrecoassistant.assistant.Assistant
+import az.azreco.azrecoassistant.fsm.states.*
 import az.azreco.azrecoassistant.model.PhoneContact
-import az.azreco.azrecoassistant.fsm.states.CallState
-import az.azreco.azrecoassistant.fsm.states.HomeState
-import az.azreco.azrecoassistant.fsm.states.NewsState
-import az.azreco.azrecoassistant.fsm.states.SmsState
 import kotlinx.coroutines.*
 import java.lang.Exception
 
@@ -17,7 +15,8 @@ class StateMachine(
     homeState: HomeState,
     callState: CallState,
     smsState: SmsState,
-    newsState: NewsState
+    newsState: NewsState,
+    contactState: ContactState
 ) {
     private val TAG = "DialogFlow"
 
@@ -32,6 +31,7 @@ class StateMachine(
         State.callState = callState
         State.smsState = smsState
         State.newsState = newsState
+        State.contactState = contactState
         State.currentState = State.homeState
     }
 
@@ -57,7 +57,7 @@ class StateMachine(
             dialogListener = {
                 listener(it)
             },
-            onSceneChanged = {
+            onStateChanged = {
                 runState(listener = listener, stateParam = it)
             },
             parametr = stateParam
@@ -96,4 +96,5 @@ sealed class DialogResponse {
 // Parametr that have all Scene classes
 sealed class StateParam {
     class Contact(val contact: PhoneContact) : StateParam()
+    class ContactName(val contactName: String, val nextState: String) : StateParam()
 }

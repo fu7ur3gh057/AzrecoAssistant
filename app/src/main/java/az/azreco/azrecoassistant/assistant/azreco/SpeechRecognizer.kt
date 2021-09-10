@@ -2,6 +2,7 @@ package az.azreco.azrecoassistant.assistant.azreco
 
 import android.util.Log
 import az.azreco.azrecoassistant.constants.Constants
+import az.azreco.azrecoassistant.util.TimeUtil
 import com.AndroidMic
 import com.Callbacks
 import com.EnergyVad
@@ -15,7 +16,6 @@ import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.*
-import kotlin.jvm.Throws
 
 class SpeechRecognizer : Callbacks {
 
@@ -69,7 +69,9 @@ class SpeechRecognizer : Callbacks {
         coroutineScope {
             asrJob = launch {
                 launch(Dispatchers.IO) { startVad() }
-                result = async { waitingSpeechResult(status = status) }.await()
+                result = withContext(Dispatchers.Default) {
+                    waitingSpeechResult(status = status)
+                }
             }
             asrJob?.join()
         }
@@ -129,7 +131,7 @@ class SpeechRecognizer : Callbacks {
         var resultKws = ""
         Log.d(TAG, "KWS working")
         while (kwsClient!!.hasResult(true)) {
-            Log.d(TAG, Calendar.getInstance().time.toString())
+            Log.d(TAG, TimeUtil.getCurrentTime(withSecods = true))
             val result = kwsClient!!.result
             try {
                 val jsonObj = JSONObject(result)
@@ -274,6 +276,7 @@ class SpeechRecognizer : Callbacks {
         continuesClient = null
         asrJob?.cancelAndJoin()
         asrJob = null
+        resetFields()
     }
 
     suspend fun release() {

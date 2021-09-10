@@ -81,7 +81,6 @@ public class EnergyVad {
         if (!haveCallbacks) {
             return -1;
         }
-        callbacks.callbackStart();
         break_input:
         {
             while (true) {
@@ -104,9 +103,7 @@ public class EnergyVad {
                 }//
                 int restate = callbacks.callbackGetCheck();
                 if (restate < 0) {
-
                     if (totalLen > 0) {
-
                         if (restate != SPEECH_TIMEOUT && restate != SERVER_CUT) {
                             callbacks.callbackStop();
                         }
@@ -117,13 +114,11 @@ public class EnergyVad {
                     break break_input;
                 }//
                 if (count > 0) {
-
                     int ii = 0;
                     int buflen = step + count;
                     for (ii = 0; ii + chunk_size <= buflen; ii += chunkStep) {
                         int nonOverlapOffset = endOf - ii;
                         float RMSE = calcRmse(buffer, ii, chunk_size);
-
                         if (first_frame) {
                             first_frame = false;
                             lambda = 0.8f;
@@ -132,9 +127,7 @@ public class EnergyVad {
                             rmseMin = initialRmseMin;
                             rmseMax = rmseMin / (1 - lambda);
                         }
-
                         rmseMax = Math.max(rmseMax, RMSE);
-
                         if (RMSE < rmseMin) {
                             if (RMSE < minimalRMSE)
                                 rmseMin = initialRmseMin;
@@ -163,10 +156,9 @@ public class EnergyVad {
                         }
                         if (!triggered && res > 0) {
                             triggered = true;
-//                            callbacks.callbackStart();
+                            callbacks.callbackStart();
                             int ad_process_ret = callbacks.callbackProcess(headBuffer,
                                     0, headBufferBeginLength);
-
                             switch (ad_process_ret) {
                                 case 1:
                                     end_status = 2;
@@ -190,13 +182,10 @@ public class EnergyVad {
                             end_status = 0;
                             continue ;
                         }
-
                         if (triggered) {
-
                             int ad_process_ret = callbacks.callbackProcess(buffer, ii
                                     + nonOverlapOffset, chunk_size
                                     - nonOverlapOffset);
-
                             switch (ad_process_ret) {
                                 case 1:
                                     end_status = 2;
@@ -212,7 +201,6 @@ public class EnergyVad {
                             }
                             totalLen += chunk_size - nonOverlapOffset;
                         }
-
                         if (!triggered) {
                             int len = chunk_size - nonOverlapOffset;
                             if (len >= headBuffer.length) {
@@ -249,7 +237,7 @@ public class EnergyVad {
                     }
                 }// if count >0
                 else if(count==0){
-//                    Thread.sleep(1);
+                    Thread.sleep(1);
                 }
             }// while true
 

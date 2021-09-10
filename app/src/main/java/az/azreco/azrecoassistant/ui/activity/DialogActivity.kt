@@ -32,17 +32,8 @@ class DialogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDialogBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        viewModel.lol()
-        val player = AudioPlayer(context = this)
-        lifecycleScope.launch(Dispatchers.IO) {
-            val tts = TextToSpeech()
-            val l = tts.synthesizeMultiple(listOf("salam", "bir iki"))
-            Log.d(TAG, "list size ${l.size}")
-            for (i in l) {
-                tts.speakByteStream(i.baos)
-            }
-        }
-        Log.d(TAG, "end of onCreate")
+        viewModel.lol()
+
     }
 
     // State Machine Methods

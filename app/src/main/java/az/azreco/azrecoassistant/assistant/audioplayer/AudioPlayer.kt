@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.*
 
 class AudioPlayer(private val context: Context) {
 
@@ -26,7 +27,10 @@ class AudioPlayer(private val context: Context) {
             audioTrack = audioKit.audioTrack.also { it.play() }
             var i: Int
             val buffer = ByteArray(audioKit.bufferSize)
+            val b = buffer.copyOfRange(44, buffer.size)
             val inputStream = context.resources.openRawResource(fileName)
+            audioTrack?.play()
+            audioTrack?.playbackHeadPosition = 100
             try {
                 while (inputStream.read(buffer).also { i = it } != -1)
                     audioTrack?.write(buffer, 0, i)
@@ -34,9 +38,7 @@ class AudioPlayer(private val context: Context) {
                 ex.printStackTrace()
             } finally {
                 inputStream.close()
-                Log.d("L", "IN closed")
-                audioTrack?.destroy()
-                audioTrack = null
+                audioTrack?.release()
             }
         }
     }

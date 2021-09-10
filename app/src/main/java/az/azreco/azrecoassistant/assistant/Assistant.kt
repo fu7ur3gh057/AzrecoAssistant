@@ -2,18 +2,21 @@ package az.azreco.azrecoassistant.assistant
 
 import android.annotation.SuppressLint
 import android.util.Log
+import az.azreco.azrecoassistant.R
+import az.azreco.azrecoassistant.assistant.audioplayer.AudioPlayer
 import az.azreco.azrecoassistant.assistant.azreco.SpeechRecognizer
 import az.azreco.azrecoassistant.assistant.azreco.TextToSpeech
 import az.azreco.azrecoassistant.assistant.azreco.TextToSpeechModel
-import az.azreco.azrecoassistant.assistant.exo.ExoPlayer
 import java.io.ByteArrayOutputStream
 
 class Assistant(
     private val speechRecognizer: SpeechRecognizer,
     private val textToSpeech: TextToSpeech,
-    private val exoPlayer: ExoPlayer
+//    private val exoPlayer: ExoPlayer,
+    private val audioPlayer: AudioPlayer
 ) {
     private val TAG = "DialogFlow"
+    private val repeatAudios = listOf(R.raw.repeat_1, R.raw.repeat_2)
 
     // SPEECH TO TEXT
     suspend fun listen(silence: Int = 3, keyWords: String) =
@@ -21,8 +24,34 @@ class Assistant(
 
     suspend fun listenSpeech(silence: Int = 3) = speechRecognizer.listenSpeech(silence = silence)
 
-    suspend fun listenKeyword(silence: Int = 3, keyWords: String) =
+    suspend fun listenKeyword(silence: Int = 5, keyWords: String) =
         speechRecognizer.listenKeyword(silence = silence, keyWords = keyWords)
+
+
+    suspend fun reListenKeyword(
+        keyWords: String,
+        limit: Int = 5,
+        startLambda: () -> Unit,
+        endLambda: suspend (String) -> Unit
+    ) {
+        var counter = 0
+        break_input@ do {
+            counter += 1
+            startLambda() // callback listening
+            val kWord = listenKeyword(keyWords = keyWords, silence = 4)
+            if (kWord.isNotEmpty()) {
+                Log.d(TAG, "response is not Empty")
+                endLambda(kWord)
+            } else if (counter >= limit) {
+                Log.d(TAG, "counter >= limit")
+                playAudio(audioFile = R.raw.signal_stop)
+                break@break_input
+            } else if (kWord.isEmpty()) {
+                Log.d(TAG, "response is Empty")
+                playAudio(audioFile = repeatAudios.random())
+            }
+        } while (kWord.isEmpty())
+    }
 
     suspend fun listenKeyword(
         keyWords: String,
@@ -37,17 +66,17 @@ class Assistant(
             when {
                 response.isNotEmpty() -> endListen(response)
                 counter >= limit -> {
-                    Log.d(TAG,"Limit!")
-                    playExoSync("signal_stop")
+                    Log.d(TAG, "Limit!")
+                    playAudio(audioFile = R.raw.signal_stop)
                     break@break_point
                 }
                 response.isEmpty() -> {
-                    Log.d(TAG,"response is Empty")
+                    Log.d(TAG, "response is Empty")
                     counter += 1
-//                    playExoSync("repeat_1")
+                    playAudio(audioFile = repeatAudios.random())
                 }
             }
-            Log.d(TAG,"counter $counter")
+            Log.d(TAG, "counter $counter")
             response = ""
         } while (response.isEmpty())
     }
@@ -77,26 +106,28 @@ class Assistant(
     ): List<TextToSpeechModel> = textToSpeech.synthesizeMultiple(texts = texts, voiceId = voiceId)
 
 
-    // EXO PLAYER
-    /**
-     * plays ExoPlayer Synchronously,
-     * audioFile - name of asset file without path,
-     * playAltFile - if true, will play postFile after audioFile,
-     * postFile - name of asset file without path
-     */
-    suspend fun playExoSync(
-        audioFile: String,
-        playPostFile: Boolean = true,
-        postFile: String = "signal_start"
-    ) = exoPlayer.playSync(audioFile = audioFile, playPostFile = playPostFile, postFile = postFile)
+//    // EXO PLAYER
+//    /**
+//     * plays ExoPlayer Synchronously,
+//     * audioFile - name of asset file without path,
+//     * playAltFile - if true, will play postFile after audioFile,
+//     * postFile - name of asset file without path
+//     */
+//    suspend fun playExoSync(
+//        audioFile: String,
+//        playPostFile: Boolean = true,
+//        postFile: String = "signal_start"
+//    ) = exoPlayer.playSync(audioFile = audioFile, playPostFile = playPostFile, postFile = postFile)
+//
+//
+//    /**
+//     * plays ExoPlayer Asynchronously,
+//     * audioFile - name of asset file without path
+//     */
+//    suspend fun playExoAsync(audioFile: String) = exoPlayer.playAsync(audioFile = audioFile)
+//
 
-
-    /**
-     * plays ExoPlayer Asynchronously,
-     * audioFile - name of asset file without path
-     */
-    suspend fun playExoAsync(audioFile: String) = exoPlayer.playAsync(audioFile = audioFile)
-
+    suspend fun playAudio(audioFile: Int) = audioPlayer.play(fileName = audioFile)
 
     /**
      * Release all classes
@@ -104,7 +135,8 @@ class Assistant(
     suspend fun release() {
         textToSpeech.release()
         speechRecognizer.release()
-        exoPlayer.release()
+        audioPlayer.release()
+//        exoPlayer.release()
     }
 
 }

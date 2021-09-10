@@ -9,17 +9,18 @@ abstract class State {
     private lateinit var onStateChangedListener: suspend (StateParam?) -> Unit
     val dialogCall by lazy {
         DialogCallback(
-            dialogListener = dialogListener)
+            dialogListener = dialogListener
+        )
     }
     private var param: StateParam? = null
 
     open suspend fun enter(
         dialogListener: (DialogResponse) -> Unit,
-        onSceneChanged: suspend (StateParam?) -> Unit,
+        onStateChanged: suspend (StateParam?) -> Unit,
         parametr: StateParam? = null
     ) {
         this.dialogListener = dialogListener
-        onStateChangedListener = onSceneChanged
+        onStateChangedListener = onStateChanged
         parametr?.let { this.param = it }
     }
 
@@ -40,5 +41,6 @@ abstract class State {
         var callState: State? = null
         var smsState: State? = null
         var newsState: State? = null
+        var contactState: State? = null
     }
 }
