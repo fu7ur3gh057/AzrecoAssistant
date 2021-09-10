@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color">
+    android:background="@color/main_color"
+    app:layoutDescription="@xml/fragment_sign_in_scene">
 
     <View
-        android:id="@+id/loginTopView"
+        android:id="@+id/signInTopView"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:background="@color/login_color"
@@ -15,16 +16,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/loginWaveView"
+        android:id="@+id/signInTopWaveView"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:background="@drawable/ic_wave_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginTopView" />
+        app:layout_constraintTop_toBottomOf="@+id/signInTopView" />
 
     <ImageView
-        android:id="@+id/loginProfileIv"
+        android:id="@+id/signInProfileIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -35,23 +36,23 @@
         app:tint="@color/main_color" />
 
     <TextView
-        android:id="@+id/loginTopTitle"
+        android:id="@+id/signInTopTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="48dp"
+        android:fontFamily="monospace"
         android:text="Giriş"
         android:textColor="@color/main_color"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:fontFamily="@font/abeezee"
-        app:layout_constraintEnd_toStartOf="@+id/loginProfileIv"
+        app:layout_constraintEnd_toStartOf="@+id/signInProfileIv"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/loginTopView"
+        app:layout_constraintStart_toStartOf="@+id/signInTopView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/loginEmailEt"
+        android:id="@+id/signInEmailEt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -64,12 +65,13 @@
         android:hint="email"
         android:inputType="textEmailAddress"
         android:padding="16dp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginWaveView" />
+        app:layout_constraintTop_toBottomOf="@+id/signInTopWaveView" />
 
     <EditText
-        android:id="@+id/loginPasswordEt"
+        android:id="@+id/signInPasswordEt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -82,12 +84,13 @@
         android:hint="şifrə"
         android:inputType="textPassword"
         android:padding="16dp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginEmailEt" />
+        app:layout_constraintTop_toBottomOf="@+id/signInEmailEt" />
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/signInBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -101,22 +104,22 @@
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginPasswordEt" />
+        app:layout_constraintTop_toBottomOf="@+id/signInPasswordEt" />
 
     <TextView
-        android:id="@+id/loginForgotPassTv"
+        android:id="@+id/signInForgotPassTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="şifrəni unutmusunuz?"
         android:textColor="@color/login_color"
         android:textSize="18sp"
-        android:fontFamily="sans-serif-condensed-medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
 
     <!--    <TextView-->
     <!--        android:id="@+id/textView7"-->
@@ -131,25 +134,25 @@
     <!--        app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />-->
 
     <LinearLayout
-        android:id="@+id/loginSocialContainer"
+        android:id="@+id/signInSocialContainer"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/loginSignUpTv"
+        app:layout_constraintBottom_toTopOf="@+id/signInRedirectTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/logingoogleIv"
+            android:id="@+id/signInGoogleIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/google" />
 
         <ImageView
-            android:id="@+id/loginFacebookIv"
+            android:id="@+id/signInFacebookIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -157,18 +160,18 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/loginSignUpTv"
+        android:id="@+id/signInRedirectTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="30dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="qeydiyyat"
         android:textColor="@color/login_color"
         android:textSize="18sp"
-        android:fontFamily="sans-serif-condensed-medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
