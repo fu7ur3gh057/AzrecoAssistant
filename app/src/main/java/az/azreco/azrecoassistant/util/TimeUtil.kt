@@ -9,7 +9,7 @@ object TimeUtil {
 
     fun getCurrentDate(): String = SimpleDateFormat("yyyy-MM-dd").format(Date())
 
-    fun getCurrentTime(withSecods: Boolean = false): String = if (withSecods) {
+    fun getCurrentTime(seconds: Boolean = true): String = if (seconds) {
         getTimeDateInfo(pattern = "HH:mm:ss")
     } else {
         getTimeDateInfo(pattern = "HH:mm")

@@ -28,7 +28,7 @@ class SpeechRecognizer : Callbacks {
     private var frameSizeInSamples = 0
 
     private var kwsClient: ASRClient? = null
-    private var continuesClient: ASRClient? = null
+    private var speechClient: ASRClient? = null
     private var androidMic: AndroidMic? = null
     private var energyVad: EnergyVad? = null
     private var closeMic = false
@@ -39,12 +39,12 @@ class SpeechRecognizer : Callbacks {
 
     suspend fun listen(silence: Int = 5, keyWords: String): SttResponse {
         this.keyWords = keyWords
-        continuesClient = ASRClient(getAsrConfig(isKWS = false))
+        speechClient = ASRClient(getAsrConfig(isKWS = false))
         kwsClient = ASRClient(getAsrConfig(isKWS = true))
         var continuesResult = ""
         var kwsResult = ""
         silenceTime = silence * 1000
-        val continuesStatus = continuesClient!!.connect()
+        val continuesStatus = speechClient!!.connect()
         val kwsStatus = kwsClient!!.connect()
         coroutineScope {
             asrJob = launch {
@@ -61,11 +61,11 @@ class SpeechRecognizer : Callbacks {
         return SttResponse(speechResponse = continuesResult, kwsResponse = kwsResult)
     }
 
-    suspend fun listenSpeech(silence: Int = 3): String {
-        continuesClient = ASRClient(getAsrConfig(isKWS = false))
+    suspend fun speechRecognize(silence: Int = 3): String {
+        speechClient = ASRClient(getAsrConfig(isKWS = false))
         var result = ""
         silenceTime = silence * 1000
-        val status = continuesClient!!.connect()
+        val status = speechClient!!.connect()
         coroutineScope {
             asrJob = launch {
                 launch(Dispatchers.IO) { startVad() }
@@ -74,13 +74,14 @@ class SpeechRecognizer : Callbacks {
                 }
             }
             asrJob?.join()
+            Log.v(TAG,"end kws ${TimeUtil.getCurrentTime(true)}")
         }
         Log.d(TAG, "The Result is - $result")
         destroy()
         return result
     }
 
-    suspend fun listenKeyword(
+    suspend fun keywordSpotting(
         silence: Int = 5,
         keyWords: String,
     ): String {
@@ -91,12 +92,14 @@ class SpeechRecognizer : Callbacks {
         setVadParametrs(silence = silence)
         coroutineScope {
             asrJob = launch {
+                Log.v(TAG,"start kws job ${TimeUtil.getCurrentTime(true)}")
                 launch(Dispatchers.IO) { startVad() }
                 withContext(Dispatchers.IO) {
                     resultKeyword = waitingKwsResult(status = kwsStatus)
                 }
             }
             asrJob?.join()
+            Log.v(TAG,"end kws job ${TimeUtil.getCurrentTime(true)}")
         }
         Log.d(TAG, "The Result is - $resultKeyword")
         destroy()
@@ -107,8 +110,8 @@ class SpeechRecognizer : Callbacks {
         val resultSb = StringBuilder()
         if (status == 0) {
             Log.d(TAG, "ASR working")
-            while (continuesClient?.hasResult(true) == true) {
-                val jsonResult = continuesClient?.result
+            while (speechClient?.hasResult(true) == true) {
+                val jsonResult = speechClient?.result
                 try {
                     val jsonObj = JSONObject(jsonResult)
                     val recogResult = jsonObj.getString("resultText")
@@ -118,11 +121,11 @@ class SpeechRecognizer : Callbacks {
                 }
             }
         }
-        continuesClient?.apply {
+        speechClient?.apply {
             waitForCompletion()
             destroy()
         }
-        continuesClient = null
+        speechClient = null
         Log.d(TAG, "ASR stopped")
         return if (resultSb.isNotEmpty()) resultSb.toString() else ""
     }
@@ -131,7 +134,7 @@ class SpeechRecognizer : Callbacks {
         var resultKws = ""
         Log.d(TAG, "KWS working")
         while (kwsClient!!.hasResult(true)) {
-            Log.d(TAG, TimeUtil.getCurrentTime(withSecods = true))
+            Log.d(TAG, TimeUtil.getCurrentTime(seconds = true))
             val result = kwsClient!!.result
             try {
                 val jsonObj = JSONObject(result)
@@ -210,9 +213,9 @@ class SpeechRecognizer : Callbacks {
         val bf = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN)
         bf.asShortBuffer().put(buf, offset, len)
         val leBuffer = bf.array()
-        return if ((continuesClient?.isOk == true || kwsClient?.isOk == true) && !closeMic) {
+        return if ((speechClient?.isOk == true || kwsClient?.isOk == true) && !closeMic) {
             kwsClient?.write(leBuffer, 0, leBuffer.size)
-            continuesClient?.write(leBuffer, 0, leBuffer.size)
+            speechClient?.write(leBuffer, 0, leBuffer.size)
             0
         } else {
             -1
@@ -236,7 +239,7 @@ class SpeechRecognizer : Callbacks {
         else {
             Log.d(TAG, "callbackStop - ${Calendar.getInstance().time}")
             kwsClient?.endStream()
-            continuesClient?.endStream()
+            speechClient?.endStream()
             closeMic = true
             androidMic?.close()
         }
@@ -251,32 +254,30 @@ class SpeechRecognizer : Callbacks {
     private fun resetFields() {
         frameSizeInBytes = 0
         frameSizeInSamples = 0
-        androidMic = null
         energyVad = null
         closeMic = false
     }
 
     private suspend fun destroy() {
+        resetFields()
         androidMic?.let {
             it.stop()
             it.close()
         }
-        resetFields()
         kwsClient?.let {
             it.endStream()
             it.stop()
             it.destroy()
         }
         kwsClient = null
-        continuesClient?.let {
+        speechClient?.let {
             it.endStream()
             it.stop()
             it.destroy()
         }
-        continuesClient = null
+        speechClient = null
         asrJob?.cancelAndJoin()
         asrJob = null
-        resetFields()
     }
 
     suspend fun release() {

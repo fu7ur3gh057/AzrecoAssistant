@@ -5,6 +5,7 @@ import az.azreco.azrecoassistant.assistant.Assistant
 import az.azreco.azrecoassistant.assistant.audioplayer.AudioPlayer
 import az.azreco.azrecoassistant.assistant.azreco.SpeechRecognizer
 import az.azreco.azrecoassistant.assistant.azreco.TextToSpeech
+import az.azreco.azrecoassistant.assistant.exo.ExoPlayer
 import az.azreco.azrecoassistant.util.ContactsUtil
 import az.azreco.azrecoassistant.util.SmsUtil
 import dagger.Module
@@ -41,15 +42,16 @@ object SingletonModule {
     @Provides
     fun provideTextToSpeech() = TextToSpeech()
 
-//    @Singleton
-//    @Provides
-//    fun provideExoPlayer(@ApplicationContext app: Context) = ExoPlayer(context = app)
+    @Singleton
+    @Provides
+    fun provideExoPlayer(@ApplicationContext app: Context) = ExoPlayer(context = app)
 
     @Singleton
     @Provides
     fun provideAssistant(
         speechRecognizer: SpeechRecognizer,
         textToSpeech: TextToSpeech,
+        exoPlayer: ExoPlayer,
         audioPlayer: AudioPlayer
-    ) = Assistant(speechRecognizer, textToSpeech, audioPlayer)
+    ) = Assistant(speechRecognizer, textToSpeech, exoPlayer, audioPlayer)
 }

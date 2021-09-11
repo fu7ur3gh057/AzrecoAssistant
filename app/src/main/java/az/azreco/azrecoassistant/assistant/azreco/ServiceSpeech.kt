@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream
 
 class ServiceSpeech {
 
-    private val TAG = "TextToSpeech"
+    private val TAG = "ServiceSpeech"
     private var audioTrack: AudioTrack? = null
     private var voiceId = ""
     private var ttsJob: Job? = null

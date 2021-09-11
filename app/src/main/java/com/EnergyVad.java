@@ -13,7 +13,7 @@ public class EnergyVad {
     int headBufferBeginLength = 0;
     int totalLen = 0;
     int prev_res = 0;
-    boolean triggered = true;
+    boolean triggered = false;
     float rmseMin;
     float rmseMax;
     float initialRmseMin;
@@ -84,7 +84,9 @@ public class EnergyVad {
         break_input:
         {
             while (true) {
+                // long ssss=System.currentTimeMillis();
                 count = callbacks.callbackRead(buffer, step, read_size);
+                //Log.d("audio",""+(System.currentTimeMillis()-ssss) +" "+count);
                 /* end of stream /segment or error */
                 if (count < 0) {
                     switch (count) {
@@ -103,7 +105,9 @@ public class EnergyVad {
                 }//
                 int restate = callbacks.callbackGetCheck();
                 if (restate < 0) {
+
                     if (totalLen > 0) {
+
                         if (restate != SPEECH_TIMEOUT && restate != SERVER_CUT) {
                             callbacks.callbackStop();
                         }
@@ -114,11 +118,19 @@ public class EnergyVad {
                     break break_input;
                 }//
                 if (count > 0) {
+
                     int ii = 0;
                     int buflen = step + count;
+                    // printf("count %d step %d len %d  total %d\n", count,
+                    // step,
+                    // buflen, total);
                     for (ii = 0; ii + chunk_size <= buflen; ii += chunkStep) {
+                        //
+                        // printf("[%d ] \n", endof-ii );
+                        // process(buffer + ii, size, endof - ii, vadTestList);
                         int nonOverlapOffset = endOf - ii;
                         float RMSE = calcRmse(buffer, ii, chunk_size);
+
                         if (first_frame) {
                             first_frame = false;
                             lambda = 0.8f;
@@ -127,7 +139,9 @@ public class EnergyVad {
                             rmseMin = initialRmseMin;
                             rmseMax = rmseMin / (1 - lambda);
                         }
+
                         rmseMax = Math.max(rmseMax, RMSE);
+
                         if (RMSE < rmseMin) {
                             if (RMSE < minimalRMSE)
                                 rmseMin = initialRmseMin;
@@ -139,10 +153,18 @@ public class EnergyVad {
                             delta = delta * 1.001f;
                         }
                         rmseMin = rmseMin * delta;
+                        // calculate threshold
                         lambda = (rmseMax - rmseMin) / rmseMax;
                         float threshold = (1 - lambda) * rmseMax + lambda
                                 * rmseMin;
+
+                        // $$$$
                         int res = prev_res;
+//						Log.d(TAG,"RMSE "+RMSE+ " RMSE_MIN "+ rmseMin + "RMSE_MAX "+rmseMax + " delta "
+//						+delta + " threshold"+threshold+ " lambda "+lambda+ " samples count "+count + " cycle_count" +cycle_count);
+//						// printf("\nrmse %f rmseMax %f rmseMin %f threshhold %f  lambda %f \n",
+                        // RMSE, rmseMax, rmseMin, threshold, lambda);
+
                         if (prev_res < 1 && RMSE > threshold) {
                             cycle_count = cycle_countSize;
                             res = 1;
@@ -150,6 +172,7 @@ public class EnergyVad {
                                 && RMSE < threshold) {
                             res = -1;
                         }
+                        // $$$$$$$
                         prev_res = res;
                         if (triggered && prev_res < 0) {
                             --cycle_count;
@@ -157,8 +180,10 @@ public class EnergyVad {
                         if (!triggered && res > 0) {
                             triggered = true;
                             callbacks.callbackStart();
+                            //Log.d(TAG, "start");
                             int ad_process_ret = callbacks.callbackProcess(headBuffer,
                                     0, headBufferBeginLength);
+
                             switch (ad_process_ret) {
                                 case 1:
                                     end_status = 2;
@@ -180,12 +205,16 @@ public class EnergyVad {
                             cycle_count = cycle_countSize;
                             callbacks.callbackStop();
                             end_status = 0;
+                            //Log.d(TAG, "stop");
                             continue ;
                         }
+
                         if (triggered) {
+
                             int ad_process_ret = callbacks.callbackProcess(buffer, ii
                                     + nonOverlapOffset, chunk_size
                                     - nonOverlapOffset);
+
                             switch (ad_process_ret) {
                                 case 1:
                                     end_status = 2;
@@ -200,34 +229,60 @@ public class EnergyVad {
                                     break break_input;
                             }
                             totalLen += chunk_size - nonOverlapOffset;
+                            //Log.d(TAG, "total: "+totalLen);
+//                            if (totalLen >= MAX_SPEECH_LEN) {
+//                                // end of stream force
+//                                end_of_stream = true;
+//                                break break_input;
+//                            }
+
                         }
+
                         if (!triggered) {
+                            // always store
                             int len = chunk_size - nonOverlapOffset;
                             if (len >= headBuffer.length) {
+                                // arraycopy(Object src, int srcPos, Object
+                                // dest,
+                                // int destPos, int length)
                                 System.arraycopy(buffer, count
                                                 - headBuffer.length, headBuffer, 0,
                                         headBuffer.length);
                                 headBufferBeginLength = headBuffer.length;
                             } else {
                                 if (len + headBufferBeginLength > headBuffer.length) {
+                                    // shift to left length size
                                     int overflowSize = len + headBufferBeginLength
                                             - headBuffer.length;
                                     int shiftSize = headBufferBeginLength
                                             - overflowSize;
+                                    // arraycopy(Object src, int srcPos, Object
+                                    // dest, int destPos, int length)
                                     System.arraycopy(headBuffer, overflowSize,
                                             headBuffer, 0, shiftSize);
                                     headBufferBeginLength = shiftSize;
                                 }
+
+                                // arraycopy(Object src, int srcPos, Object
+                                // dest,
+                                // int destPos, int length)
                                 System.arraycopy(buffer, nonOverlapOffset + ii,
                                         headBuffer, headBufferBeginLength, len);
                                 headBufferBeginLength += len;
                             }
                         }
+                        // printf("[%d ; %d] %d sample non overlap data begins [%d;%d)\n",
+                        // ii, ii + size, buflen, endof, endof + size / 2);
+                        // printf("[%d ; %d]  in total\n", total - step + ii,
+                        // total
+                        // - step + ii + size);
                         endOf = ii + chunk_size;
                     }// for loop
                     step = buflen - ii;
                     endOf = step >= chunkStep ? chunkStep : 0;
                     if (ii > 0) {
+                        // arraycopy(Object src, int srcPos, Object dest, int
+                        // destPos, int length)
                         System.arraycopy(buffer, ii, buffer, 0, step);
                     }
                     if (currentStartTime + visualizeTime <= System.currentTimeMillis()) {
@@ -243,6 +298,7 @@ public class EnergyVad {
 
         }// break_input
         if (end_of_stream) {
+            // callback_exec(CALLBACK_EVENT_SPEECH_STOP, recog);
             this.callbacks.callbackStop();
         }
         return end_status;

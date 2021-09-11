@@ -9,6 +9,7 @@ import az.azreco.azrecoassistant.assistant.azreco.AudioTrackKit
 import az.azreco.azrecoassistant.constants.Constants.SAMPLE_RATE_HZ
 import az.azreco.azrecoassistant.util.Ext.destroy
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -21,48 +22,25 @@ class AudioPlayer(private val context: Context) {
     private var audioTrack: AudioTrack? = null
 
     @Throws(Exception::class)
-    suspend fun play(fileName: Int) {
-        withContext(Dispatchers.Default) {
-            val audioKit = initAudioTrack()
-            audioTrack = audioKit.audioTrack.also { it.play() }
-            var i: Int
-            val buffer = ByteArray(audioKit.bufferSize)
-            val b = buffer.copyOfRange(44, buffer.size)
-            val inputStream = context.resources.openRawResource(fileName)
-            audioTrack?.play()
-            audioTrack?.playbackHeadPosition = 100
-            try {
-                while (inputStream.read(buffer).also { i = it } != -1)
-                    audioTrack?.write(buffer, 0, i)
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            } finally {
-                inputStream.close()
-                audioTrack?.release()
-            }
+    suspend fun play(fileName: Int) = coroutineScope {
+        val audioKit = initAudioTrack()
+        audioTrack = audioKit.audioTrack.also { it.play() }
+        var i: Int
+        val buffer = ByteArray(audioKit.bufferSize)
+        val inputStream = context.resources.openRawResource(fileName)
+        inputStream.skip(44)
+        audioTrack?.play()
+        audioTrack?.playbackHeadPosition = 100
+        try {
+            while (inputStream.read(buffer).also { i = it } != -1)
+                audioTrack?.write(buffer, 0, i)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        } finally {
+            inputStream.close()
+            audioTrack?.release()
         }
     }
-
-    @Throws(IOException::class)
-    private fun readAllBytes(inputStream: InputStream): ByteArrayOutputStream {
-        val out = ByteArrayOutputStream()
-        copyAllBytes(inputStream, out)
-        return out
-    }
-
-    @Throws(IOException::class)
-    private fun copyAllBytes(inputStream: InputStream, outputStream: OutputStream): Int {
-        var byteCount = 0
-        val buffer = ByteArray(4096)
-        while (true) {
-            val read = inputStream.read(buffer)
-            if (read == -1) break
-            outputStream.write(buffer, 0, read)
-            byteCount += read
-        }
-        return byteCount
-    }
-
 
     // Init AudioTrack
     private fun initAudioTrack(): AudioTrackKit {

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import az.azreco.azrecoassistant.assistant.Assistant
 import az.azreco.azrecoassistant.repo.network.AzrecoRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,19 +24,11 @@ class LoginViewModel @Inject constructor(
     }
 
     init {
-        lol()
+        Log.d(TAG, "INIT VM")
     }
 
-    private fun lol() = viewModelScope.launch {
-        assistant.reListenKeyword("salam\nstop",
-            limit = 4,
-            startLambda = {
-                Log.v(TAG, "startLambda")
-            },
-            endLambda = {
-                Log.v(TAG, "endLambda, result is $it")
-            }
-        )
+    fun lol() = viewModelScope.launch(Dispatchers.Default) {
+        assistant.speechRecognize()
     }
 
 }

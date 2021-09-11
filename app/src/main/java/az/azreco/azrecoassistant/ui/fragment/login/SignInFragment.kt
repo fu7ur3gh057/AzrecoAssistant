@@ -6,12 +6,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import az.azreco.azrecoassistant.R
+import az.azreco.azrecoassistant.assistant.audioplayer.SyncPlayer
 import az.azreco.azrecoassistant.databinding.FragmentSignInBinding
 import az.azreco.azrecoassistant.ui.activity.MainActivity
 import az.azreco.azrecoassistant.ui.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
@@ -30,11 +34,13 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun signInClickListener() = binding.signInBtn.setOnClickListener {
-        if (filterLoginData()) {
-            // viewModel signIn()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            requireContext().startActivity(intent)
-        }
+        sharedViewModel.lol()
+
+        //        if (filterLoginData()) {
+//            // viewModel signIn()
+//            val intent = Intent(requireContext(), MainActivity::class.java)
+//            requireContext().startActivity(intent)
+//        }
     }
 
     private fun filterLoginData(): Boolean {
