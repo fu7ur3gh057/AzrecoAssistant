@@ -26,9 +26,4 @@ class LoginViewModel @Inject constructor(
     init {
         Log.d(TAG, "INIT VM")
     }
-
-    fun lol() = viewModelScope.launch(Dispatchers.Default) {
-        assistant.speechRecognize()
-    }
-
 }

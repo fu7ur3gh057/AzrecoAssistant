@@ -1,4 +1,4 @@
-package az.azreco.azrecoassistant.assistant.exo
+package az.azreco.azrecoassistant.assistant.player
 
 import android.content.Context
 import android.util.Log
@@ -13,6 +13,9 @@ import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Main Player Class - SimpleExoPlayer. works Asynchronized
+ */
 class ExoPlayer(private val context: Context) {
     private var exoPlayer: SimpleExoPlayer? = null
 

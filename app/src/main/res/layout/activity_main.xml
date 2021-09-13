@@ -14,7 +14,25 @@
         android:background="@color/main_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mainProfileIv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/em"
+                app:civ_border_color="@color/selected_item"
+                app:civ_border_width="1dp" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
 
 
     <FrameLayout

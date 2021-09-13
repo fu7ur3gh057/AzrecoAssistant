@@ -30,8 +30,6 @@ class AzrecoService : NotificationListenerService() {
 
     private val serviceScope = CoroutineScope(Dispatchers.Default)
 
-    private var isRunning = false
-
     @Inject
     lateinit var baseNotificationBuilder: NotificationCompat.Builder
 

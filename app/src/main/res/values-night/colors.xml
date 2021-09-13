@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="main_color">#252525</color>
-    <color name="login_color">#05C44B</color>
+    <color name="login_color">#03AD42</color>
     <color name="alt_color">#FFFFFF</color>
     <color name="idrak_color">#00B902</color>
     <color name="selected_item">#CDCDCD</color>
@@ -16,6 +16,6 @@
     <color name="bottom_app_bar">#121212</color>
 
     <color name="tip_container">#CACACA</color>
-    <color name="status_bar_color">#000000</color>
+    <color name="status_bar_color">#252525</color>
 
 </resources>

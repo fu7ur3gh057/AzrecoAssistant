@@ -2,10 +2,11 @@ package az.azreco.azrecoassistant.dagger
 
 import android.content.Context
 import az.azreco.azrecoassistant.assistant.Assistant
-import az.azreco.azrecoassistant.assistant.audioplayer.AudioPlayer
+import az.azreco.azrecoassistant.assistant.player.AudioPlayer
 import az.azreco.azrecoassistant.assistant.azreco.SpeechRecognizer
+import az.azreco.azrecoassistant.assistant.azreco.SpeechVisualize
 import az.azreco.azrecoassistant.assistant.azreco.TextToSpeech
-import az.azreco.azrecoassistant.assistant.exo.ExoPlayer
+import az.azreco.azrecoassistant.assistant.player.ExoPlayer
 import az.azreco.azrecoassistant.util.ContactsUtil
 import az.azreco.azrecoassistant.util.SmsUtil
 import dagger.Module
@@ -36,7 +37,12 @@ object SingletonModule {
 
     @Singleton
     @Provides
-    fun provideSpeechRecognizer() = SpeechRecognizer()
+    fun provideSpeechVisualize() = SpeechVisualize()
+
+    @Singleton
+    @Provides
+    fun provideSpeechRecognizer(speechVisualize: SpeechVisualize) =
+        SpeechRecognizer(speechVisualize = speechVisualize)
 
     @Singleton
     @Provides

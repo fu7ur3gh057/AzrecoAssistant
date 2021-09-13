@@ -103,6 +103,7 @@ dependencies {
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
+    // AudioRecordView
+    implementation 'com.github.Armen101:AudioRecordView:1.0.5'
 
 }

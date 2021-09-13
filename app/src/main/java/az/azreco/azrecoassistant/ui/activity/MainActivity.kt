@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         requestPermissions()
         setupUI()
         fabClickListener()
+        profileIconClickListener()
     }
 
     private fun fabClickListener() = binding.mainFab.setOnClickListener {
@@ -42,6 +44,10 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         } else {
             requestPermissions()
         }
+    }
+
+    private fun profileIconClickListener() = binding.mainProfileIv.setOnClickListener {
+        Toast.makeText(this, "LOOOL", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupUI() {

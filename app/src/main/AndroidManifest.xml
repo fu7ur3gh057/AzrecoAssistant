@@ -23,13 +23,7 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.DialogActivity"
             android:configChanges="orientation"
@@ -37,7 +31,13 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".service.AzrecoService"

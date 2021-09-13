@@ -17,7 +17,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.*
 
-class SpeechRecognizer : Callbacks {
+class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks {
 
     private var asrJob: Job? = null // Job for running KWS,continues and EnergyVad
 
@@ -74,7 +74,7 @@ class SpeechRecognizer : Callbacks {
                 }
             }
             asrJob?.join()
-            Log.v(TAG,"end kws ${TimeUtil.getCurrentTime(true)}")
+            Log.v(TAG, "end kws ${TimeUtil.getCurrentTime(true)}")
         }
         Log.d(TAG, "The Result is - $result")
         destroy()
@@ -92,14 +92,14 @@ class SpeechRecognizer : Callbacks {
         setVadParametrs(silence = silence)
         coroutineScope {
             asrJob = launch {
-                Log.v(TAG,"start kws job ${TimeUtil.getCurrentTime(true)}")
+                Log.v(TAG, "start kws job ${TimeUtil.getCurrentTime(true)}")
                 launch(Dispatchers.IO) { startVad() }
                 withContext(Dispatchers.IO) {
                     resultKeyword = waitingKwsResult(status = kwsStatus)
                 }
             }
             asrJob?.join()
-            Log.v(TAG,"end kws job ${TimeUtil.getCurrentTime(true)}")
+            Log.v(TAG, "end kws job ${TimeUtil.getCurrentTime(true)}")
         }
         Log.d(TAG, "The Result is - $resultKeyword")
         destroy()
@@ -245,7 +245,10 @@ class SpeechRecognizer : Callbacks {
         }
     }
 
-    override fun callbackVisualize(value: Float) {}
+    override fun callbackVisualize(value: Float) {
+        Log.d(TAG, "Max Amplitude: $value")
+        speechVisualize.maxAmplitude = value.toInt() * 10
+    }
 
     private fun setVadParametrs(silence: Int) {
         silenceTime = silence * 1000
@@ -313,3 +316,12 @@ class SpeechRecognizer : Callbacks {
 
 // обычный дата класс который хранит в себе два результата. используется в методе listen()
 data class SttResponse(val speechResponse: String, val kwsResponse: String)
+
+class SpeechVisualize {
+    var maxAmplitude: Int? = null
+        get() {
+            val amp = field
+            maxAmplitude = null
+            return amp
+        }
+}

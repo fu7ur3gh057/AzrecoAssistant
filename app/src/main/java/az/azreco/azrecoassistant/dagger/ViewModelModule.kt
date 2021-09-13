@@ -14,35 +14,4 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @InstallIn(ViewModelComponent::class)
 object ViewModelModule {
 
-    @ViewModelScoped
-    @Provides
-    fun provideStateMachine(
-        homeState: HomeState,
-        callState: CallState,
-        smsState: SmsState,
-        newsState: NewsState,
-        contactState: ContactState
-    ) = StateMachine(homeState, callState, smsState, newsState, contactState)
-
-    @ViewModelScoped
-    @Provides
-    fun provideHomeState() = HomeState()
-
-    @ViewModelScoped
-    @Provides
-    fun provideCallState() = CallState()
-
-    @ViewModelScoped
-    @Provides
-    fun provideSmsState() = SmsState()
-
-    @ViewModelScoped
-    @Provides
-    fun provideNewsState() = NewsState()
-
-    @ViewModelScoped
-    @Provides
-    fun provideContactState(assistant: Assistant, contactsUtil: ContactsUtil) =
-        ContactState(assistant = assistant, contactsUtil = contactsUtil)
-
 }

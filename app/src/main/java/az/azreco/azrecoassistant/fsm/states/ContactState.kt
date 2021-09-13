@@ -36,15 +36,6 @@ class ContactState(
         }
     }
 
-//    private suspend fun ifContactNotFound(): PhoneContact? {
-//        Log.d(TAG, "::ifContactNotFound::")
-//        dialogCall.updateDialog(true, "kontakt tapılmadı")
-//        assistant.playExoSync(audioFile = "") // TODO
-//        return null
-//    }
-
-
-
     override suspend fun onNextState(nextState: State) {
         super.onNextState(nextState)
     }

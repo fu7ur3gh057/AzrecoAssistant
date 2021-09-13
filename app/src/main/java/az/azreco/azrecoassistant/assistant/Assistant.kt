@@ -2,11 +2,11 @@ package az.azreco.azrecoassistant.assistant
 
 import android.annotation.SuppressLint
 import android.util.Log
-import az.azreco.azrecoassistant.assistant.audioplayer.AudioPlayer
+import az.azreco.azrecoassistant.assistant.player.AudioPlayer
 import az.azreco.azrecoassistant.assistant.azreco.SpeechRecognizer
 import az.azreco.azrecoassistant.assistant.azreco.TextToSpeech
 import az.azreco.azrecoassistant.assistant.azreco.TextToSpeechModel
-import az.azreco.azrecoassistant.assistant.exo.ExoPlayer
+import az.azreco.azrecoassistant.assistant.player.ExoPlayer
 import az.azreco.azrecoassistant.constants.Audio
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream

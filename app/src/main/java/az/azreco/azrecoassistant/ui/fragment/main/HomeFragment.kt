@@ -8,10 +8,12 @@ import androidx.fragment.app.viewModels
 import az.azreco.azrecoassistant.R
 import az.azreco.azrecoassistant.api.data.TipModel
 import az.azreco.azrecoassistant.databinding.FragmentHomeBinding
+import az.azreco.azrecoassistant.fsm.states.NewsState
 import az.azreco.azrecoassistant.ui.viewmodel.HomeViewModel
 import az.azreco.azrecoassistant.util.TimeUtil
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {

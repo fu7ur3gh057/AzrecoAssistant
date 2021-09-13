@@ -1,22 +1,17 @@
-package az.azreco.azrecoassistant.assistant.audioplayer
+package az.azreco.azrecoassistant.assistant.player
 
 import android.content.Context
 import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
-import android.util.Log
 import az.azreco.azrecoassistant.assistant.azreco.AudioTrackKit
 import az.azreco.azrecoassistant.constants.Constants.SAMPLE_RATE_HZ
 import az.azreco.azrecoassistant.util.Ext.destroy
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
-import java.util.*
 
+/**
+ * Main Player Class - AudioTrack. works Synchronized
+ */
 class AudioPlayer(private val context: Context) {
 
     private var audioTrack: AudioTrack? = null

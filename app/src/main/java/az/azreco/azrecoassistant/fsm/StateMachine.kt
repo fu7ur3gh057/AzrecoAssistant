@@ -18,9 +18,7 @@ class StateMachine(
     newsState: NewsState,
     contactState: ContactState
 ) {
-    private val TAG = "DialogFlow"
-
-    private val stateScope = CoroutineScope(Dispatchers.Default)
+    private val TAG = "StateMachine"
 
     private var stateJob: Job? = null
 
@@ -35,7 +33,7 @@ class StateMachine(
         State.currentState = State.homeState
     }
 
-    fun start(listener: (DialogResponse) -> Unit) = stateScope.launch {
+    suspend fun start(listener: (DialogResponse) -> Unit) = withContext(Dispatchers.Default) {
         isRunning = true
         stateJob = launch {
             try {
@@ -76,11 +74,8 @@ class StateMachine(
     fun isRunning() = isRunning
 
     fun destroy() {
-        stateScope.launch {
-            stateJob?.cancel()
-            stateJob = null
-        }
-        stateScope.cancel()
+        stateJob?.cancel()
+        stateJob = null
     }
 
 }
