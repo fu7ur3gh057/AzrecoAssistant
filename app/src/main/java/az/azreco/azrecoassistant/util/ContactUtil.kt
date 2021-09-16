@@ -7,7 +7,7 @@ import android.util.Log
 import az.azreco.azrecoassistant.model.PhoneContact
 
 // обычный класс утилита для работы с контактами телефона
-class ContactsUtil(private val context: Context) {
+class ContactUtil(private val context: Context) {
 
     private val TAG = "ContactUtil"
 
@@ -70,33 +70,5 @@ class ContactsUtil(private val context: Context) {
             cursor?.close()
         }
         return contactList.distinct()
-    }
-
-    // нужно изменить метод, использовать regex
-    // цель метода - изменить номер в строку для правильного чтения TTS
-    //  из +994505553355 в + 994 50 555 33 55. так же с 0 вместо +994
-    fun numberForTTS(phoneNo: String): String {
-        var phoneNumber = phoneNo
-        if (phoneNumber.startsWith("+994")) {
-            val countryCode = "0"
-            phoneNumber = phoneNumber.replace("+994", "")
-            val operatorCode = phoneNumber.take(2)
-            phoneNumber = phoneNumber.removeRange(0, 2)
-            val firstNumber = phoneNumber.take(3)
-            phoneNumber = phoneNumber.removeRange(0, 3)
-            val secondNumber = phoneNumber.take(2)
-            phoneNumber = phoneNumber.removeRange(0, 2)
-            val thirdNumber = phoneNumber.take(2)
-            return "$countryCode-$operatorCode-$firstNumber-$secondNumber-$thirdNumber"
-        } else {
-            val operatorCode = phoneNumber.take(3)
-            phoneNumber = phoneNumber.removeRange(0, 3)
-            val firstNumber = phoneNumber.take(3)
-            phoneNumber = phoneNumber.removeRange(0, 3)
-            val secondNumber = phoneNumber.take(2)
-            phoneNumber = phoneNumber.removeRange(0, 2)
-            val thirdNumber = phoneNumber.take(2)
-            return "$operatorCode-$firstNumber-$secondNumber-$thirdNumber"
-        }
     }
 }

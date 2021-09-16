@@ -292,7 +292,7 @@ public class EnergyVad {
                     }
                 }// if count >0
                 else if(count==0){
-                    Thread.sleep(1);
+//                    Thread.sleep(1);
                 }
             }// while true
 

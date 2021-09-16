@@ -2,12 +2,12 @@ package az.azreco.azrecoassistant.dagger
 
 import android.content.Context
 import az.azreco.azrecoassistant.assistant.Assistant
-import az.azreco.azrecoassistant.assistant.player.AudioPlayer
 import az.azreco.azrecoassistant.assistant.azreco.SpeechRecognizer
-import az.azreco.azrecoassistant.assistant.azreco.SpeechVisualize
 import az.azreco.azrecoassistant.assistant.azreco.TextToSpeech
+import az.azreco.azrecoassistant.assistant.player.AudioPlayer
 import az.azreco.azrecoassistant.assistant.player.ExoPlayer
-import az.azreco.azrecoassistant.util.ContactsUtil
+import az.azreco.azrecoassistant.fsm.SpeechVisualizer
+import az.azreco.azrecoassistant.util.ContactUtil
 import az.azreco.azrecoassistant.util.SmsUtil
 import dagger.Module
 import dagger.Provides
@@ -23,12 +23,12 @@ object SingletonModule {
     @Singleton
     @Provides
     fun provideContactsUtil(@ApplicationContext app: Context) =
-        ContactsUtil(context = app)
+        ContactUtil(context = app)
 
     @Singleton
     @Provides
-    fun provideSmsUtil(@ApplicationContext app: Context, contactsUtility: ContactsUtil) =
-        SmsUtil(context = app, contactsUtility = contactsUtility)
+    fun provideSmsUtil(@ApplicationContext app: Context, contactUtil: ContactUtil) =
+        SmsUtil(contactUtil = contactUtil)
 
 
     @Singleton
@@ -37,12 +37,12 @@ object SingletonModule {
 
     @Singleton
     @Provides
-    fun provideSpeechVisualize() = SpeechVisualize()
+    fun provideSpeechVisualize() = SpeechVisualizer()
 
     @Singleton
     @Provides
-    fun provideSpeechRecognizer(speechVisualize: SpeechVisualize) =
-        SpeechRecognizer(speechVisualize = speechVisualize)
+    fun provideSpeechRecognizer(speechVisualizer: SpeechVisualizer) =
+        SpeechRecognizer(speechVisualizer = speechVisualizer)
 
     @Singleton
     @Provides

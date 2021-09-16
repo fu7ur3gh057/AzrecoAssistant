@@ -1,12 +1,15 @@
 package az.azreco.azrecoassistant.ui.fragment.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import az.azreco.azrecoassistant.R
 import az.azreco.azrecoassistant.api.data.TipModel
+import az.azreco.azrecoassistant.constants.Constants
 import az.azreco.azrecoassistant.databinding.FragmentHomeBinding
 import az.azreco.azrecoassistant.fsm.states.NewsState
 import az.azreco.azrecoassistant.ui.viewmodel.HomeViewModel
@@ -28,6 +31,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = FragmentHomeBinding.bind(view)
         subscribeToObservers()
         setupTimeTitle()
+        binding.homeTipCv.tipIv.setOnClickListener { checkNotificationListenerPermission() }
+    }
+
+    private fun checkNotificationListenerPermission() {
+        startActivity(Intent(Constants.NOTIFICATION_LISTENERS_PARAMETERS))
     }
 
     private fun subscribeToObservers() {

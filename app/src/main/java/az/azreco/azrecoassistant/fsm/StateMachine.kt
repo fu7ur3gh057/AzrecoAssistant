@@ -19,9 +19,7 @@ class StateMachine(
     contactState: ContactState
 ) {
     private val TAG = "StateMachine"
-
     private var stateJob: Job? = null
-
     private var isRunning = false
 
     init {
@@ -90,6 +88,8 @@ sealed class DialogResponse {
 
 // Parametr that have all Scene classes
 sealed class StateParam {
-    class Contact(val contact: PhoneContact) : StateParam()
-    class ContactName(val contactName: String, val nextState: String) : StateParam()
+    // for ContactState
+    class ContactStateParam(val contactName: String? = null, val nextState: State?) : StateParam()
+    // for SmsState and CallState
+    class ContactParam(val contact: PhoneContact): StateParam()
 }

@@ -1,22 +1,21 @@
 package az.azreco.azrecoassistant.fsm
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import az.azreco.azrecoassistant.adapter.DialogData
 import az.azreco.azrecoassistant.assistant.Assistant
-import az.azreco.azrecoassistant.assistant.azreco.SpeechVisualize
 import kotlinx.coroutines.*
-import java.lang.Exception
 
 class StateService(
     private val stateMachine: StateMachine,
     private val assistant: Assistant,
-    private val speechVisualize: SpeechVisualize
 ) {
     private val TAG = "StateService"
     private val stateScope = CoroutineScope(Dispatchers.Default)
     private var stateJob: Job? = null
-    private var serviceIsActive = false
+    var serviceIsActive = MutableLiveData<Boolean>()
+    private var context: Context? = null
 
     private var copyMessageList = mutableListOf<Any>()
 
@@ -30,24 +29,31 @@ class StateService(
         initLiveData()
     }
 
-    fun getMaxAmplitude() = speechVisualize.maxAmplitude
+    fun setContext(ctx: Context) {
+        context = ctx
+    }
 
-    fun startCommand(): Any = if (serviceIsActive) {
-        Log.v(TAG, "State Machine is Already Running")
-    } else {
-        serviceIsActive = true
-        stateScope.launch {
+    private fun observeVizualProgress() {
+
+    }
+
+//    fun getMaxAmplitude() = speechVisualize.maxAmplitude
+
+    fun startCommand() = stateScope.launch {
+        if (serviceIsActive.value == false) {
+            serviceIsActive.postValue(true)
             stateJob = launch {
                 try {
                     stateMachine.start { handleResponse(response = it) }
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 } finally {
-                    serviceIsActive = false
+                    serviceIsActive.postValue(false)
                 }
             }
         }
     }
+
 
     private fun handleResponse(response: DialogResponse) = when (response) {
         is DialogResponse.Action -> handleAction(response)
@@ -79,6 +85,7 @@ class StateService(
         stateJob?.cancel()
         stateJob = null
         initLiveData()
+        context = null
         Log.v(TAG, "onDestroy")
     }
 
@@ -87,6 +94,7 @@ class StateService(
         isProcessing.postValue(false)
         lastQuestion.postValue(null)
         action.postValue(null)
+        serviceIsActive.postValue(false)
     }
 
 }

@@ -2,6 +2,7 @@ package az.azreco.azrecoassistant.assistant.azreco
 
 import android.util.Log
 import az.azreco.azrecoassistant.constants.Constants
+import az.azreco.azrecoassistant.fsm.SpeechVisualizer
 import az.azreco.azrecoassistant.util.TimeUtil
 import com.AndroidMic
 import com.Callbacks
@@ -17,7 +18,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.*
 
-class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks {
+class SpeechRecognizer(private val speechVisualizer: SpeechVisualizer) : Callbacks {
 
     private var asrJob: Job? = null // Job for running KWS,continues and EnergyVad
 
@@ -69,8 +70,8 @@ class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks
         coroutineScope {
             asrJob = launch {
                 launch(Dispatchers.IO) { startVad() }
-                result = withContext(Dispatchers.Default) {
-                    waitingSpeechResult(status = status)
+                withContext(Dispatchers.IO) {
+                    result = waitingSpeechResult(status = status)
                 }
             }
             asrJob?.join()
@@ -231,7 +232,8 @@ class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks
 
     override fun callbackStart() {
         if (!closeMic)
-            Log.d(TAG, "callbackStart - androidMic ON ::: ${Calendar.getInstance().time}")
+            speechVisualizer.isActive.postValue(true)
+        Log.d(TAG, "callbackStart - androidMic ON ::: ${Calendar.getInstance().time}")
     }
 
     override fun callbackStop() {
@@ -240,14 +242,15 @@ class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks
             Log.d(TAG, "callbackStop - ${Calendar.getInstance().time}")
             kwsClient?.endStream()
             speechClient?.endStream()
+            speechVisualizer.isActive.postValue(false)
             closeMic = true
             androidMic?.close()
         }
     }
 
     override fun callbackVisualize(value: Float) {
-        Log.d(TAG, "Max Amplitude: $value")
-        speechVisualize.maxAmplitude = value.toInt() * 10
+//        Log.d(TAG, "Max Amplitude: $value")
+        speechVisualizer.maxAmplitude = value.toInt() * 10
     }
 
     private fun setVadParametrs(silence: Int) {
@@ -257,12 +260,12 @@ class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks
     private fun resetFields() {
         frameSizeInBytes = 0
         frameSizeInSamples = 0
+
         energyVad = null
         closeMic = false
     }
 
     private suspend fun destroy() {
-        resetFields()
         androidMic?.let {
             it.stop()
             it.close()
@@ -281,6 +284,8 @@ class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks
         speechClient = null
         asrJob?.cancelAndJoin()
         asrJob = null
+        resetFields()
+        Log.v(TAG, "SpeechRecognizer Destroyed")
     }
 
     suspend fun release() {
@@ -316,12 +321,3 @@ class SpeechRecognizer(private val speechVisualize: SpeechVisualize) : Callbacks
 
 // обычный дата класс который хранит в себе два результата. используется в методе listen()
 data class SttResponse(val speechResponse: String, val kwsResponse: String)
-
-class SpeechVisualize {
-    var maxAmplitude: Int? = null
-        get() {
-            val amp = field
-            maxAmplitude = null
-            return amp
-        }
-}

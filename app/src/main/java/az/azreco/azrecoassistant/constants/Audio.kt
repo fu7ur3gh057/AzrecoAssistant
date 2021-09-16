@@ -16,5 +16,6 @@ object Audio {
     const val contactNotFound = R.raw.contact_not_found
     val repeats = listOf(R.raw.repeat_1, R.raw.repeat_2).random()
     val callCanceled = listOf(R.raw.call_cancel, R.raw.canceled_2).random()
+    val smsCanceled = listOf(R.raw.sms_canceled, R.raw.canceled_2, R.raw.canceled_1).random()
 
 }

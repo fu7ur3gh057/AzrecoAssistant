@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import az.azreco.azrecoassistant.R
+import az.azreco.azrecoassistant.constants.Constants.NOTIFICATION_LISTENERS_PARAMETERS
 import az.azreco.azrecoassistant.databinding.ActivityMainBinding
 import az.azreco.azrecoassistant.ui.viewmodel.MainViewModel
 import az.azreco.azrecoassistant.util.PermissionUtil
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         setupUI()
         fabClickListener()
         profileIconClickListener()
+        viewModel.initContacts()
     }
 
     private fun fabClickListener() = binding.mainFab.setOnClickListener {

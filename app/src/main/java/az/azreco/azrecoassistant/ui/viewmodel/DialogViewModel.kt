@@ -1,5 +1,8 @@
 package az.azreco.azrecoassistant.ui.viewmodel
 
+import android.content.ComponentName
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import az.azreco.azrecoassistant.R
 import az.azreco.azrecoassistant.adapter.DialogData
 import az.azreco.azrecoassistant.assistant.Assistant
+import az.azreco.azrecoassistant.service.DialogService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,14 +20,24 @@ import javax.inject.Inject
 class DialogViewModel @Inject constructor(
     private val assistant: Assistant
 ) : ViewModel() {
-
     private val TAG = "DialogViewModel"
+    val binder = MutableLiveData<DialogService.DialogBinder?>()
 
-    private val copyMessage = mutableListOf<DialogData.Message>()
+    init {
+        binder.postValue(null)
+    }
 
-    val messageList = MutableLiveData<List<DialogData.Message>>()
+    val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
+            Log.d(TAG, "onServiceConnected")
+            binder.postValue(iBinder as DialogService.DialogBinder)
+        }
 
-    val isSynthesizing = MutableLiveData<Boolean>()
-    val lastQuestion = MutableLiveData<DialogData.Message>()
+        override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d(TAG, "onServiceDisconnected")
+            binder.postValue(null)
+        }
+    }
+
 
 }
