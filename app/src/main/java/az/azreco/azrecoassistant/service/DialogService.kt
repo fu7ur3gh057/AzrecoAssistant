@@ -7,31 +7,31 @@ import android.os.IBinder
 import android.util.Log
 import az.azreco.azrecoassistant.assistant.Assistant
 import az.azreco.azrecoassistant.constants.Audio
+import az.azreco.azrecoassistant.scene.SceneContainer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class DialogService : Service() {
 
     private val TAG = "DialogService"
-    private val serviceScope = CoroutineScope(Dispatchers.Default)
+    private var serviceScope: CoroutineScope? = null
     private var serviceJob: Job? = null
     private var binder = DialogBinder()
     private var isActive = false
 
     @Inject
-    lateinit var assistant: Assistant
+    lateinit var sceneContainer: SceneContainer
 
     override fun onCreate() {
         super.onCreate()
         Log.v(TAG, "onCreate ${getThreadName()}")
-
     }
 
     override fun onBind(intent: Intent?): IBinder {
         Log.v(TAG, "onBind ${getThreadName()}")
+        serviceScope = CoroutineScope(Dispatchers.Default)
         return binder
     }
 
@@ -40,23 +40,16 @@ class DialogService : Service() {
         else stopCommand()
     }
 
-    fun startCommand() = serviceScope.launch {
-        this@DialogService.isActive = true
-        Log.v(TAG, "startCommand ${getThreadName()}")
+    fun startCommand() = serviceScope?.launch {
         serviceJob = launch {
-            assistant.playAsync(Audio.callContact)
-            repeat(1000) {
-                Log.v(TAG, "$it time, | ${getThreadName()}")
-                delay(5000)
+            sceneContainer.rrr {
+                Log.v(TAG, "-- $it")
             }
         }
     }
 
 
-    fun stopCommand() = serviceScope.launch {
-        this@DialogService.isActive = false
-        Log.v(TAG, "stopCommand ${getThreadName()}")
-        assistant.playAsync(Audio.signalStop)
+    fun stopCommand() = serviceScope?.launch {
         destroyJob()
     }
 
@@ -68,6 +61,8 @@ class DialogService : Service() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         destroyJob()
+        serviceScope?.cancel()
+        serviceScope = null
         Log.v(TAG, "onUnbind ${getThreadName()}")
         return super.onUnbind(intent)
     }

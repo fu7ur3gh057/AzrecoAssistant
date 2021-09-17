@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:elevation="5dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/main_color"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        tools:ignore="RtlSymmetry">
+
+
+        <ImageView
+            android:id="@+id/dialogMicIv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_microphone"
+            app:tint="@color/selected_item" />
+
+
+        <ImageView
+            android:id="@+id/dialogSearchIv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_search"
+            app:tint="@color/selected_item" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

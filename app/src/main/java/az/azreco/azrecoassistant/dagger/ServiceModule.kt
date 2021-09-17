@@ -10,6 +10,9 @@ import az.azreco.azrecoassistant.constants.Constants.ACTION_SHOW_MAIN_ACTIVITY
 import az.azreco.azrecoassistant.constants.Constants.NOTIFICATION_CHANNEL_ID
 import az.azreco.azrecoassistant.constants.Constants.NOTIFICATION_TEXT
 import az.azreco.azrecoassistant.constants.Constants.NOTIFICATION_TITLE
+import az.azreco.azrecoassistant.scene.SceneContainer
+import az.azreco.azrecoassistant.scene.scenes.SmsScene
+import az.azreco.azrecoassistant.scene.scenes.WeatherScene
 import az.azreco.azrecoassistant.ui.activity.MainActivity
 import dagger.Module
 import dagger.Provides
@@ -21,6 +24,20 @@ import dagger.hilt.android.scopes.ServiceScoped
 @Module
 @InstallIn(ServiceComponent::class)
 object ServiceModule {
+
+    @ServiceScoped
+    @Provides
+    fun provideSceneContainer(smsScene: SmsScene, weatherScene: WeatherScene) =
+        SceneContainer(smsScene = smsScene, weatherScene = weatherScene)
+
+    @ServiceScoped
+    @Provides
+    fun provideSmsScene() = SmsScene()
+
+
+    @ServiceScoped
+    @Provides
+    fun provideWeatherScene() = WeatherScene()
 
     @ServiceScoped
     @Provides

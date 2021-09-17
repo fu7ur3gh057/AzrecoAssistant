@@ -1,11 +1,11 @@
 package az.azreco.azrecoassistant.dagger
 
 import az.azreco.azrecoassistant.assistant.Assistant
-import az.azreco.azrecoassistant.assistant.azreco.SpeechVisualize
 import az.azreco.azrecoassistant.fsm.StateMachine
 import az.azreco.azrecoassistant.fsm.StateService
 import az.azreco.azrecoassistant.fsm.states.*
-import az.azreco.azrecoassistant.util.ContactsUtil
+import az.azreco.azrecoassistant.util.ContactUtil
+import az.azreco.azrecoassistant.util.SmsUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,11 +22,9 @@ object ActivityModule {
     @Provides
     fun provideStateService(
         stateMachine: StateMachine, assistant: Assistant,
-        speechVisualize: SpeechVisualize
     ) = StateService(
         stateMachine = stateMachine,
         assistant = assistant,
-        speechVisualize = speechVisualize
     )
 
     @ActivityScoped
@@ -41,7 +39,10 @@ object ActivityModule {
 
     @ActivityScoped
     @Provides
-    fun provideHomeState() = HomeState()
+    fun provideHomeState(assistant: Assistant, contactUtil: ContactUtil) = HomeState(
+        assistant = assistant,
+        contactUtil = contactUtil
+    )
 
     @ActivityScoped
     @Provides
@@ -49,7 +50,8 @@ object ActivityModule {
 
     @ActivityScoped
     @Provides
-    fun provideSmsState() = SmsState()
+    fun provideSmsState(assistant: Assistant, smsUtil: SmsUtil) =
+        SmsState(assistant = assistant, smsUtil = smsUtil)
 
     @ActivityScoped
     @Provides
@@ -57,10 +59,10 @@ object ActivityModule {
 
     @ActivityScoped
     @Provides
-    fun provideContactState(assistant: Assistant, contactsUtil: ContactsUtil) =
+    fun provideContactState(assistant: Assistant, contactUtil: ContactUtil) =
         ContactState(
             assistant = assistant,
-            contactsUtil = contactsUtil
+            contactUtil = contactUtil
         )
 
 
